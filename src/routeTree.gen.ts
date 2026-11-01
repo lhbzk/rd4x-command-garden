@@ -14,6 +14,8 @@ import { Route as DashboardRouteImport } from './routes/_dashboard'
 import { Route as KeyRouteImport } from './routes/key'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardOverviewRouteImport } from './routes/_dashboard/overview'
+import { Route as DashboardReleasesRouteImport } from './routes/_dashboard/releases'
+import { Route as DashboardTicketsRouteImport } from './routes/_dashboard/tickets'
 import { Route as DashboardUsersRouteImport } from './routes/_dashboard/users'
 
 const IndexRoute = IndexRouteImport.update({
@@ -40,6 +42,16 @@ const DashboardOverviewRoute = DashboardOverviewRouteImport.update({
   path: '/overview',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardReleasesRoute = DashboardReleasesRouteImport.update({
+  id: '/releases',
+  path: '/releases',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardTicketsRoute = DashboardTicketsRouteImport.update({
+  id: '/tickets',
+  path: '/tickets',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardUsersRoute = DashboardUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -51,6 +63,8 @@ export interface FileRoutesByFullPath {
   '/key': typeof KeyRoute
   '/login': typeof LoginRoute
   '/overview': typeof DashboardOverviewRoute
+  '/releases': typeof DashboardReleasesRoute
+  '/tickets': typeof DashboardTicketsRoute
   '/users': typeof DashboardUsersRoute
 }
 export interface FileRoutesByTo {
@@ -58,6 +72,8 @@ export interface FileRoutesByTo {
   '/key': typeof KeyRoute
   '/login': typeof LoginRoute
   '/overview': typeof DashboardOverviewRoute
+  '/releases': typeof DashboardReleasesRoute
+  '/tickets': typeof DashboardTicketsRoute
   '/users': typeof DashboardUsersRoute
 }
 export interface FileRoutesById {
@@ -67,13 +83,17 @@ export interface FileRoutesById {
   '/key': typeof KeyRoute
   '/login': typeof LoginRoute
   '/_dashboard/overview': typeof DashboardOverviewRoute
+  '/_dashboard/releases': typeof DashboardReleasesRoute
+  '/_dashboard/tickets': typeof DashboardTicketsRoute
   '/_dashboard/users': typeof DashboardUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/key' | '/login' | '/overview' | '/users'
+  fullPaths:
+    '/' | '/key' | '/login' | '/overview' | '/releases' | '/tickets' | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/key' | '/login' | '/overview' | '/users'
+  to:
+    '/' | '/key' | '/login' | '/overview' | '/releases' | '/tickets' | '/users'
   id:
     | '__root__'
     | '/'
@@ -81,6 +101,8 @@ export interface FileRouteTypes {
     | '/key'
     | '/login'
     | '/_dashboard/overview'
+    | '/_dashboard/releases'
+    | '/_dashboard/tickets'
     | '/_dashboard/users'
   fileRoutesById: FileRoutesById
 }
@@ -128,6 +150,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardOverviewRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/_dashboard/releases': {
+      id: '/_dashboard/releases'
+      path: '/releases'
+      fullPath: '/releases'
+      preLoaderRoute: typeof DashboardReleasesRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/tickets': {
+      id: '/_dashboard/tickets'
+      path: '/tickets'
+      fullPath: '/tickets'
+      preLoaderRoute: typeof DashboardTicketsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/_dashboard/users': {
       id: '/_dashboard/users'
       path: '/users'
@@ -140,11 +176,15 @@ declare module '@tanstack/react-router' {
 
 interface DashboardRouteChildren {
   DashboardOverviewRoute: typeof DashboardOverviewRoute
+  DashboardReleasesRoute: typeof DashboardReleasesRoute
+  DashboardTicketsRoute: typeof DashboardTicketsRoute
   DashboardUsersRoute: typeof DashboardUsersRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardOverviewRoute: DashboardOverviewRoute,
+  DashboardReleasesRoute: DashboardReleasesRoute,
+  DashboardTicketsRoute: DashboardTicketsRoute,
   DashboardUsersRoute: DashboardUsersRoute,
 }
 
