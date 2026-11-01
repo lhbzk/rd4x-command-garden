@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { KeyRound, LogOut, Settings, User } from "lucide-react";
 import {
@@ -30,7 +29,6 @@ export function Topbar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
   const current = allNavItems.find((i) => pathname.startsWith(i.to));
-  const crumbs = [{ label: "Dashboard", to: "/overview" as const }, ...(current ? [{ label: current.title, to: current.to }] : [])];
 
   return (
     <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background/75 px-3 backdrop-blur-xl sm:gap-3 sm:px-5">
@@ -38,21 +36,23 @@ export function Topbar() {
       <Separator orientation="vertical" className="hidden h-5 sm:block" />
       <Breadcrumb className="min-w-0">
         <BreadcrumbList className="flex-nowrap">
-          {crumbs.map((c, i) => (
-            <Fragment key={c.to}>
-              {i > 0 && <BreadcrumbSeparator />}
-              <BreadcrumbItem className={i === 0 && crumbs.length > 1 ? "hidden sm:inline-flex" : ""}>
-                {i === crumbs.length - 1 ? (
-                  <BreadcrumbPage className="truncate font-medium">{c.label}</BreadcrumbPage>
-                ) : (
-                  <BreadcrumbLink asChild>
-                    <Link to={c.to}>{c.label}</Link>
-                  </BreadcrumbLink>
-                )}
+          <BreadcrumbItem className={current ? "hidden sm:inline-flex" : ""}>
+            {current ? (
+              <BreadcrumbLink asChild>
+                <Link to="/overview">Dashboard</Link>
+              </BreadcrumbLink>
+            ) : (
+              <BreadcrumbPage className="font-medium">Dashboard</BreadcrumbPage>
+            )}
+          </BreadcrumbItem>
+          {current && (
+            <>
+              <BreadcrumbSeparator className="hidden sm:inline-flex" />
+              <BreadcrumbItem>
+                <BreadcrumbPage className="truncate font-medium">{current.title}</BreadcrumbPage>
               </BreadcrumbItem>
-              {i === 0 && crumbs.length > 1 && <BreadcrumbSeparator className="hidden sm:inline-flex" />}
-            </Fragment>
-          )).flatMap((el, i) => (i === 1 ? [el] : [el]))}
+            </>
+          )}
         </BreadcrumbList>
       </Breadcrumb>
 
