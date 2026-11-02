@@ -1,7 +1,7 @@
 // Transport layer. When VITE_RD4X_API_URL is set, requests go to the external API;
 // otherwise they resolve against the local mock dataset with realistic latency.
 
-const BASE_URL = (import.meta.env.VITE_RD4X_API_URL as string | undefined)?.replace(/\/$/, "");
+const BASE_URL = (import.meta.env["VITE_RD4X_API_URL"] as string | undefined)?.replace(/\/$/, "");
 
 export class ApiError extends Error {
   constructor(
