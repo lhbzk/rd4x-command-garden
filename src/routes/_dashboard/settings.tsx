@@ -32,8 +32,8 @@ const TABS = [
 type TabId = (typeof TABS)[number]["id"];
 
 export const Route = createFileRoute("/_dashboard/settings")({
-  validateSearch: (s: Record<string, unknown>): { tab?: TabId } => ({
-    tab: TABS.some((t) => t.id === s.tab) ? (s.tab as TabId) : undefined,
+  validateSearch: (s: Record<string, unknown>): { tab?: TabId | undefined } => ({
+    tab: TABS.some((t) => t.id === s["tab"]) ? (s["tab"] as TabId) : undefined,
   }),
   head: () => pageHead("Settings", "Workspace, profile, security, notification, appearance and system settings."),
   component: SettingsPage,
@@ -185,7 +185,7 @@ function SettingsPage() {
                   <Section title="Active sessions" description="Devices currently signed in to your account." grid={false}>
                     <ul className="divide-y divide-border rounded-xl border border-border">
                       {form.security.sessions.map((s) => (
-                        <li key={s.id} className="flex items-center gap-3 px-4 py-3">
+                        <li key={s["id"]} className="flex items-center gap-3 px-4 py-3">
                           <Laptop className="size-4 shrink-0 text-muted-foreground" />
                           <div className="min-w-0 flex-1">
                             <p className="truncate text-sm font-medium">{s.device}</p>
@@ -199,7 +199,7 @@ function SettingsPage() {
                               size="sm"
                               className="h-7 text-xs text-danger hover:text-danger"
                               onClick={() => {
-                                set("security", { sessions: form.security.sessions.filter((x) => x.id !== s.id) });
+                                set("security", { sessions: form.security.sessions.filter((x) => x.id !== s["id"]) });
                                 notify.success("Session revoked", s.device);
                               }}
                             >

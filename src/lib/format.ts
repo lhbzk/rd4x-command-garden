@@ -35,3 +35,5 @@ export function formatKeyInput(raw: string) {
 }
 
 export const isCompleteKey = (key: string) => /^RD4X-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(key);
+
+export const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);

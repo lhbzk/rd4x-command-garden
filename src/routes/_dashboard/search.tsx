@@ -13,8 +13,8 @@ import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_dashboard/search")({
-  validateSearch: (s: Record<string, unknown>): { q?: string } => ({
-    q: typeof s.q === "string" && s.q ? s.q : undefined,
+  validateSearch: (s: Record<string, unknown>): { q?: string | undefined } => ({
+    q: typeof s["q"] === "string" && s["q"] ? s["q"] : undefined,
   }),
   head: () => pageHead("Search", "Search across RD4X users, tickets, keys, releases and audit events."),
   component: SearchPage,

@@ -12,6 +12,7 @@ import { EmptyState, ErrorState, LoadingSkeleton } from "@/components/dashboard/
 import { queries } from "@/lib/api/queries";
 import type { Incident } from "@/lib/api/types";
 import { formatDate, formatDateTime, timeAgo } from "@/lib/format";
+import { capitalize } from "@/lib/format";
 import { notify } from "@/lib/notify";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -98,7 +99,7 @@ function IncidentsPage() {
         onSearchChange={setQ}
         placeholder="Search incidents or services"
         filters={[
-          { id: "sev", label: "Severities", value: severity, onChange: setSeverity, options: ["critical", "major", "minor"].map((v) => ({ value: v, label: v[0].toUpperCase() + v.slice(1) })) },
+          { id: "sev", label: "Severities", value: severity, onChange: setSeverity, options: ["critical", "major", "minor"].map((v) => ({ value: v, label: capitalize(v) })) },
           { id: "status", label: "Statuses", value: status, onChange: setStatus, options: [{ value: "active", label: "Active" }, { value: "resolved", label: "Resolved" }] },
         ]}
       />

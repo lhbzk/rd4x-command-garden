@@ -14,12 +14,13 @@ import { UserAvatar } from "@/components/dashboard/UserAvatar";
 import { queries } from "@/lib/api/queries";
 import type { User } from "@/lib/api/types";
 import { formatDate, formatNumber, timeAgo } from "@/lib/format";
+import { capitalize } from "@/lib/format";
 import { notify } from "@/lib/notify";
 import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/_dashboard/users")({
-  validateSearch: (s: Record<string, unknown>): { q?: string } => ({
-    q: typeof s.q === "string" ? s.q : undefined,
+  validateSearch: (s: Record<string, unknown>): { q?: string | undefined } => ({
+    q: typeof s["q"] === "string" ? s["q"] : undefined,
   }),
   head: () => pageHead("Users", "Manage RD4X users, roles, keys and account status."),
   component: UsersPage,
@@ -99,8 +100,8 @@ function UsersPage() {
         onSearchChange={setQ}
         placeholder="Search username, Discord ID or email"
         filters={[
-          { id: "role", label: "Roles", value: role, onChange: setRole, options: ROLES.map((r) => ({ value: r, label: cap(r) })) },
-          { id: "status", label: "Statuses", value: status, onChange: setStatus, options: STATUSES.map((r) => ({ value: r, label: cap(r) })) },
+          { id: "role", label: "Roles", value: role, onChange: setRole, options: ROLES.map((r) => ({ value: r, label: capitalize(r) })) },
+          { id: "status", label: "Statuses", value: status, onChange: setStatus, options: STATUSES.map((r) => ({ value: r, label: capitalize(r) })) },
         ]}
       />
 
@@ -199,4 +200,4 @@ function UsersPage() {
   );
 }
 
-const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
+const cap = (s: string) => capitalize(s);

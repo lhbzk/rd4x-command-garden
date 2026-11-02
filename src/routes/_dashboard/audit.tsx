@@ -12,6 +12,7 @@ import { UserAvatar } from "@/components/dashboard/UserAvatar";
 import { queries } from "@/lib/api/queries";
 import type { AuditEvent } from "@/lib/api/types";
 import { formatDateTime, timeAgo } from "@/lib/format";
+import { capitalize } from "@/lib/format";
 import { notify } from "@/lib/notify";
 import { pageHead } from "@/lib/seo";
 
@@ -91,7 +92,7 @@ function AuditPage() {
         placeholder="Search action, target, user or IP"
         filters={[
           { id: "scope", label: "Actions", value: scope, onChange: setScope, options: SCOPES.map((s) => ({ value: s, label: s })) },
-          { id: "status", label: "Statuses", value: status, onChange: setStatus, options: ["success", "warning", "failed"].map((s) => ({ value: s, label: s[0].toUpperCase() + s.slice(1) })) },
+          { id: "status", label: "Statuses", value: status, onChange: setStatus, options: ["success", "warning", "failed"].map((s) => ({ value: s, label: capitalize(s) })) },
         ]}
       />
       {isError ? (
