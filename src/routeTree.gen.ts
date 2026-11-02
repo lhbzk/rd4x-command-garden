@@ -18,6 +18,7 @@ import { Route as DashboardIncidentsRouteImport } from './routes/_dashboard/inci
 import { Route as DashboardOverviewRouteImport } from './routes/_dashboard/overview'
 import { Route as DashboardReleasesRouteImport } from './routes/_dashboard/releases'
 import { Route as DashboardSearchRouteImport } from './routes/_dashboard/search'
+import { Route as DashboardSettingsRouteImport } from './routes/_dashboard/settings'
 import { Route as DashboardStatisticsRouteImport } from './routes/_dashboard/statistics'
 import { Route as DashboardTicketsRouteImport } from './routes/_dashboard/tickets'
 import { Route as DashboardTranscriptsRouteImport } from './routes/_dashboard/transcripts'
@@ -67,6 +68,11 @@ const DashboardSearchRoute = DashboardSearchRouteImport.update({
   path: '/search',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardStatisticsRoute = DashboardStatisticsRouteImport.update({
   id: '/statistics',
   path: '/statistics',
@@ -97,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/overview': typeof DashboardOverviewRoute
   '/releases': typeof DashboardReleasesRoute
   '/search': typeof DashboardSearchRoute
+  '/settings': typeof DashboardSettingsRoute
   '/statistics': typeof DashboardStatisticsRoute
   '/tickets': typeof DashboardTicketsRoute
   '/transcripts': typeof DashboardTranscriptsRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/overview': typeof DashboardOverviewRoute
   '/releases': typeof DashboardReleasesRoute
   '/search': typeof DashboardSearchRoute
+  '/settings': typeof DashboardSettingsRoute
   '/statistics': typeof DashboardStatisticsRoute
   '/tickets': typeof DashboardTicketsRoute
   '/transcripts': typeof DashboardTranscriptsRoute
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/_dashboard/overview': typeof DashboardOverviewRoute
   '/_dashboard/releases': typeof DashboardReleasesRoute
   '/_dashboard/search': typeof DashboardSearchRoute
+  '/_dashboard/settings': typeof DashboardSettingsRoute
   '/_dashboard/statistics': typeof DashboardStatisticsRoute
   '/_dashboard/tickets': typeof DashboardTicketsRoute
   '/_dashboard/transcripts': typeof DashboardTranscriptsRoute
@@ -143,6 +152,7 @@ export interface FileRouteTypes {
     | '/overview'
     | '/releases'
     | '/search'
+    | '/settings'
     | '/statistics'
     | '/tickets'
     | '/transcripts'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
     | '/overview'
     | '/releases'
     | '/search'
+    | '/settings'
     | '/statistics'
     | '/tickets'
     | '/transcripts'
@@ -172,6 +183,7 @@ export interface FileRouteTypes {
     | '/_dashboard/overview'
     | '/_dashboard/releases'
     | '/_dashboard/search'
+    | '/_dashboard/settings'
     | '/_dashboard/statistics'
     | '/_dashboard/tickets'
     | '/_dashboard/transcripts'
@@ -250,6 +262,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSearchRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/_dashboard/settings': {
+      id: '/_dashboard/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/_dashboard/statistics': {
       id: '/_dashboard/statistics'
       path: '/statistics'
@@ -287,6 +306,7 @@ interface DashboardRouteChildren {
   DashboardOverviewRoute: typeof DashboardOverviewRoute
   DashboardReleasesRoute: typeof DashboardReleasesRoute
   DashboardSearchRoute: typeof DashboardSearchRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
   DashboardStatisticsRoute: typeof DashboardStatisticsRoute
   DashboardTicketsRoute: typeof DashboardTicketsRoute
   DashboardTranscriptsRoute: typeof DashboardTranscriptsRoute
@@ -299,6 +319,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardOverviewRoute: DashboardOverviewRoute,
   DashboardReleasesRoute: DashboardReleasesRoute,
   DashboardSearchRoute: DashboardSearchRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardStatisticsRoute: DashboardStatisticsRoute,
   DashboardTicketsRoute: DashboardTicketsRoute,
   DashboardTranscriptsRoute: DashboardTranscriptsRoute,
