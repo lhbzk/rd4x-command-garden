@@ -91,7 +91,7 @@ function StatisticsPage() {
           <div className="grid gap-4 lg:grid-cols-3">
             <ChartCard className="lg:col-span-2" title="Executions" description="Total script executions" loading={isLoading}>
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={data?.executions} margin={{ left: -8, right: 8, top: 4 }}>
+                <LineChart data={data?.executions ?? []} margin={{ left: -8, right: 8, top: 4 }}>
                   <CartesianGrid {...chartTheme.grid} />
                   <XAxis dataKey="label" {...chartTheme.axis} minTickGap={20} />
                   <YAxis {...chartTheme.axis} tickFormatter={formatCompact} width={48} />
@@ -106,7 +106,7 @@ function StatisticsPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Tooltip {...chartTheme.tooltip} formatter={(v: number) => formatNumber(v)} />
-                    <Pie data={data?.successFailure} dataKey="value" nameKey="name" innerRadius="62%" outerRadius="84%" paddingAngle={3} stroke="none">
+                    <Pie data={data?.successFailure ?? []} dataKey="value" nameKey="name" innerRadius="62%" outerRadius="84%" paddingAngle={3} stroke="none">
                       <Cell fill="var(--chart-1)" />
                       <Cell fill="var(--chart-4)" />
                     </Pie>
@@ -131,7 +131,7 @@ function StatisticsPage() {
           <div className="grid gap-4 lg:grid-cols-2">
             <ChartCard title="Active Users" description="Unique users with at least one execution" loading={isLoading}>
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data?.activeUsers} margin={{ left: -8, right: 8, top: 4 }}>
+                <AreaChart data={data?.activeUsers ?? []} margin={{ left: -8, right: 8, top: 4 }}>
                   <defs>
                     <linearGradient id="users" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="var(--chart-2)" stopOpacity={0.3} />
@@ -159,7 +159,7 @@ function StatisticsPage() {
               }
             >
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data?.responseTime} margin={{ left: -8, right: 8, top: 4 }} barGap={2}>
+                <BarChart data={data?.responseTime ?? []} margin={{ left: -8, right: 8, top: 4 }} barGap={2}>
                   <CartesianGrid {...chartTheme.grid} />
                   <XAxis dataKey="label" {...chartTheme.axis} minTickGap={20} />
                   <YAxis {...chartTheme.axis} width={40} unit="ms" />

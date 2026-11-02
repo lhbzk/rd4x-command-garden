@@ -14,12 +14,12 @@ export function StatCard({
 }: {
   label: string;
   value: React.ReactNode;
-  delta?: number;
+  delta?: number | undefined;
   icon?: LucideIcon;
-  hint?: string;
+  hint?: string | undefined;
   /** When true, a negative delta is good (e.g. open tickets going down). */
   invertDelta?: boolean;
-  loading?: boolean;
+  loading?: boolean | undefined;
   className?: string;
 }) {
   const positive = (delta ?? 0) >= 0;
