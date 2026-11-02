@@ -147,7 +147,7 @@ function CreateReleaseModal({ open, onOpenChange }: { open: boolean; onOpenChang
         .filter(Boolean)
         .map((l) => {
           const m = l.match(/^(fix|feature|improvement):\s*(.+)$/i);
-          return m ? { type: m[1].toLowerCase() as "fix", text: m[2] } : { type: "improvement" as const, text: l };
+          return m ? { type: m[1]!.toLowerCase() as "fix", text: m[2]! } : { type: "improvement" as const, text: l };
         }),
     });
 

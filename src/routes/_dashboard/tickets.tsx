@@ -34,13 +34,14 @@ import { currentAdmin, staffMembers } from "@/lib/api";
 import { queries } from "@/lib/api/queries";
 import type { Ticket, TicketStatus } from "@/lib/api/types";
 import { timeAgo } from "@/lib/format";
+import { capitalize } from "@/lib/format";
 import { notify } from "@/lib/notify";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_dashboard/tickets")({
-  validateSearch: (s: Record<string, unknown>): { id?: string } => ({
-    id: typeof s.id === "string" ? s.id : undefined,
+  validateSearch: (s: Record<string, unknown>): { id?: string | undefined } => ({
+    id: typeof s["id"] === "string" ? s["id"] : undefined,
   }),
   head: () => pageHead("Tickets", "Support tickets with priorities, assignments and live conversations."),
   component: TicketsPage,
@@ -93,8 +94,8 @@ function TicketsPage() {
         onSearchChange={setQ}
         placeholder="Search tickets, IDs or users"
         filters={[
-          { id: "status", label: "Statuses", value: status, onChange: setStatus, options: ["open", "pending", "resolved", "closed"].map((v) => ({ value: v, label: v[0].toUpperCase() + v.slice(1) })) },
-          { id: "priority", label: "Priorities", value: priority, onChange: setPriority, options: ["urgent", "high", "medium", "low"].map((v) => ({ value: v, label: v[0].toUpperCase() + v.slice(1) })) },
+          { id: "status", label: "Statuses", value: status, onChange: setStatus, options: ["open", "pending", "resolved", "closed"].map((v) => ({ value: v, label: capitalize(v) })) },
+          { id: "priority", label: "Priorities", value: priority, onChange: setPriority, options: ["urgent", "high", "medium", "low"].map((v) => ({ value: v, label: capitalize(v) })) },
         ]}
       />
 

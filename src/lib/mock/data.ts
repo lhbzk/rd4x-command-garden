@@ -27,7 +27,8 @@ function seeded(seed: number) {
 }
 
 const rand = seeded(1042);
-const pick = <T,>(arr: readonly T[], r = rand) => arr[Math.floor(r() * arr.length)];
+const pick = <T,>(arr: readonly T[], r = rand): T => arr[Math.floor(r() * arr.length)] as T;
+const at = <T,>(arr: readonly T[], i: number): T => arr[((i % arr.length) + arr.length) % arr.length] as T;
 const int = (min: number, max: number, r = rand) => Math.floor(r() * (max - min + 1)) + min;
 
 const NOW = Date.now();
@@ -71,7 +72,7 @@ export const users: User[] = USERNAMES.map((username, i) => {
   };
 });
 
-const userByName = (n: string) => users.find((u) => u.username === n) ?? users[0];
+const userByName = (n: string) => users.find((u) => u.username === n) ?? at(users, 0);
 
 const keySegment = () => {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -79,7 +80,7 @@ const keySegment = () => {
 };
 
 export const keys: KeyRecord[] = Array.from({ length: 36 }, (_, i) => {
-  const u = users[i % users.length];
+  const u = at(users, i);
   const status = i % 7 === 3 ? "expired" : i % 11 === 5 ? "revoked" : "active";
   const created = int(60 * 24 * 2, 60 * 24 * 200);
   return {
@@ -142,7 +143,7 @@ function conversation(user: string, userHue: number, staff: string, start: numbe
       author: isUser ? user : staff,
       authorRole: isUser ? "user" : "staff",
       hue: isUser ? userHue : 185,
-      content: isUser ? USER_LINES[i % USER_LINES.length] : STAFF_LINES[(i + start) % STAFF_LINES.length],
+      content: isUser ? at(USER_LINES, i) : at(STAFF_LINES, i + start),
       createdAt: minutesAgo(t),
     });
     t = Math.max(1, t - int(3, 40));
@@ -151,11 +152,11 @@ function conversation(user: string, userHue: number, staff: string, start: numbe
 }
 
 export const tickets: Ticket[] = TICKET_SUBJECTS.map(([subject, category], i) => {
-  const u = users[(i * 3 + 5) % users.length];
-  const status = (["open", "open", "pending", "resolved", "open", "pending", "closed"] as const)[i % 7];
-  const priority = (["high", "medium", "low", "urgent", "medium", "high", "low"] as const)[(i * 2) % 7];
+  const u = at(users, i * 3 + 5);
+  const status = at(["open", "open", "pending", "resolved", "open", "pending", "closed"] as const, i);
+  const priority = at(["high", "medium", "low", "urgent", "medium", "high", "low"] as const, i * 2);
   const start = int(60, 60 * 24 * 6);
-  const assignee = status === "open" && i % 3 === 0 ? null : STAFF[i % STAFF.length];
+  const assignee = status === "open" && i % 3 === 0 ? null : at(STAFF, i);
   const messages = conversation(u.username, u.hue, assignee ?? "rd4x.admin", start, int(2, 6));
   return {
     id: `TK-${1042 + i}`,
@@ -166,7 +167,7 @@ export const tickets: Ticket[] = TICKET_SUBJECTS.map(([subject, category], i) =>
     user: { username: u.username, discordId: u.discordId, hue: u.hue },
     assignee,
     createdAt: minutesAgo(start),
-    updatedAt: messages[messages.length - 1].createdAt,
+    updatedAt: at(messages, -1).createdAt,
     messages,
   };
 }).sort((a, b) => +new Date(b.updatedAt) - +new Date(a.updatedAt));
@@ -308,9 +309,9 @@ export const auditEvents: AuditEvent[] = Array.from({ length: 64 }, (_, i) => {
 });
 
 export const transcripts: Transcript[] = Array.from({ length: 14 }, (_, i) => {
-  const [subject] = TICKET_SUBJECTS[(i + 4) % TICKET_SUBJECTS.length];
-  const u = users[(i * 5 + 2) % users.length];
-  const staff = STAFF[i % STAFF.length];
+  const [subject] = at(TICKET_SUBJECTS, i + 4);
+  const u = at(users, i * 5 + 2);
+  const staff = at(STAFF, i);
   const start = int(60 * 24 * 2, 60 * 24 * 60);
   const messages = conversation(u.username, u.hue, staff, start, int(4, 8));
   messages.push({
@@ -328,7 +329,7 @@ export const transcripts: Transcript[] = Array.from({ length: 14 }, (_, i) => {
     user: u.username,
     hue: u.hue,
     staff,
-    closedAt: messages[messages.length - 1].createdAt,
+    closedAt: at(messages, -1).createdAt,
     tags: [pick(["billing", "technical", "account", "hwid"]), ...(i % 3 === 0 ? ["escalated"] : [])],
     messages,
   };

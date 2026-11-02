@@ -95,7 +95,7 @@ function OverviewPage() {
               }
             >
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data?.executions} margin={{ left: -8, right: 8, top: 4 }}>
+                <AreaChart data={data?.executions ?? []} margin={{ left: -8, right: 8, top: 4 }}>
                   <defs>
                     <linearGradient id="exec" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="var(--chart-1)" stopOpacity={0.28} />

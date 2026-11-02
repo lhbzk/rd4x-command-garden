@@ -165,11 +165,11 @@ function KeyPage() {
           <div className="mt-5 rounded-xl border border-dashed border-border-strong px-4 py-3 text-xs text-muted-foreground">
             <p className="mb-2 font-medium text-foreground/80">Demo keys</p>
             <div className="flex flex-col gap-1.5 font-mono">
-              {[
+              {([
                 ["Valid", DEMO_KEYS.valid],
                 ["Expired", DEMO_KEYS.expired],
                 ["Invalid", "RD4X-ABCD-EFGH-1234"],
-              ].map(([label, k]) => (
+              ] as const).map(([label, k]) => (
                 <button
                   key={k}
                   type="button"
