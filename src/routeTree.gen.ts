@@ -13,9 +13,14 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/_dashboard'
 import { Route as KeyRouteImport } from './routes/key'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as DashboardAuditRouteImport } from './routes/_dashboard/audit'
+import { Route as DashboardIncidentsRouteImport } from './routes/_dashboard/incidents'
 import { Route as DashboardOverviewRouteImport } from './routes/_dashboard/overview'
 import { Route as DashboardReleasesRouteImport } from './routes/_dashboard/releases'
+import { Route as DashboardSearchRouteImport } from './routes/_dashboard/search'
+import { Route as DashboardStatisticsRouteImport } from './routes/_dashboard/statistics'
 import { Route as DashboardTicketsRouteImport } from './routes/_dashboard/tickets'
+import { Route as DashboardTranscriptsRouteImport } from './routes/_dashboard/transcripts'
 import { Route as DashboardUsersRouteImport } from './routes/_dashboard/users'
 
 const IndexRoute = IndexRouteImport.update({
@@ -37,6 +42,16 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardAuditRoute = DashboardAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardIncidentsRoute = DashboardIncidentsRouteImport.update({
+  id: '/incidents',
+  path: '/incidents',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardOverviewRoute = DashboardOverviewRouteImport.update({
   id: '/overview',
   path: '/overview',
@@ -47,9 +62,24 @@ const DashboardReleasesRoute = DashboardReleasesRouteImport.update({
   path: '/releases',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardSearchRoute = DashboardSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardStatisticsRoute = DashboardStatisticsRouteImport.update({
+  id: '/statistics',
+  path: '/statistics',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardTicketsRoute = DashboardTicketsRouteImport.update({
   id: '/tickets',
   path: '/tickets',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardTranscriptsRoute = DashboardTranscriptsRouteImport.update({
+  id: '/transcripts',
+  path: '/transcripts',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardUsersRoute = DashboardUsersRouteImport.update({
@@ -62,18 +92,28 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/key': typeof KeyRoute
   '/login': typeof LoginRoute
+  '/audit': typeof DashboardAuditRoute
+  '/incidents': typeof DashboardIncidentsRoute
   '/overview': typeof DashboardOverviewRoute
   '/releases': typeof DashboardReleasesRoute
+  '/search': typeof DashboardSearchRoute
+  '/statistics': typeof DashboardStatisticsRoute
   '/tickets': typeof DashboardTicketsRoute
+  '/transcripts': typeof DashboardTranscriptsRoute
   '/users': typeof DashboardUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/key': typeof KeyRoute
   '/login': typeof LoginRoute
+  '/audit': typeof DashboardAuditRoute
+  '/incidents': typeof DashboardIncidentsRoute
   '/overview': typeof DashboardOverviewRoute
   '/releases': typeof DashboardReleasesRoute
+  '/search': typeof DashboardSearchRoute
+  '/statistics': typeof DashboardStatisticsRoute
   '/tickets': typeof DashboardTicketsRoute
+  '/transcripts': typeof DashboardTranscriptsRoute
   '/users': typeof DashboardUsersRoute
 }
 export interface FileRoutesById {
@@ -82,27 +122,59 @@ export interface FileRoutesById {
   '/_dashboard': typeof DashboardRouteWithChildren
   '/key': typeof KeyRoute
   '/login': typeof LoginRoute
+  '/_dashboard/audit': typeof DashboardAuditRoute
+  '/_dashboard/incidents': typeof DashboardIncidentsRoute
   '/_dashboard/overview': typeof DashboardOverviewRoute
   '/_dashboard/releases': typeof DashboardReleasesRoute
+  '/_dashboard/search': typeof DashboardSearchRoute
+  '/_dashboard/statistics': typeof DashboardStatisticsRoute
   '/_dashboard/tickets': typeof DashboardTicketsRoute
+  '/_dashboard/transcripts': typeof DashboardTranscriptsRoute
   '/_dashboard/users': typeof DashboardUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/key' | '/login' | '/overview' | '/releases' | '/tickets' | '/users'
+    | '/'
+    | '/key'
+    | '/login'
+    | '/audit'
+    | '/incidents'
+    | '/overview'
+    | '/releases'
+    | '/search'
+    | '/statistics'
+    | '/tickets'
+    | '/transcripts'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/key' | '/login' | '/overview' | '/releases' | '/tickets' | '/users'
+    | '/'
+    | '/key'
+    | '/login'
+    | '/audit'
+    | '/incidents'
+    | '/overview'
+    | '/releases'
+    | '/search'
+    | '/statistics'
+    | '/tickets'
+    | '/transcripts'
+    | '/users'
   id:
     | '__root__'
     | '/'
     | '/_dashboard'
     | '/key'
     | '/login'
+    | '/_dashboard/audit'
+    | '/_dashboard/incidents'
     | '/_dashboard/overview'
     | '/_dashboard/releases'
+    | '/_dashboard/search'
+    | '/_dashboard/statistics'
     | '/_dashboard/tickets'
+    | '/_dashboard/transcripts'
     | '/_dashboard/users'
   fileRoutesById: FileRoutesById
 }
@@ -143,6 +215,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_dashboard/audit': {
+      id: '/_dashboard/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof DashboardAuditRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/incidents': {
+      id: '/_dashboard/incidents'
+      path: '/incidents'
+      fullPath: '/incidents'
+      preLoaderRoute: typeof DashboardIncidentsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/_dashboard/overview': {
       id: '/_dashboard/overview'
       path: '/overview'
@@ -157,11 +243,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardReleasesRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/_dashboard/search': {
+      id: '/_dashboard/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof DashboardSearchRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/statistics': {
+      id: '/_dashboard/statistics'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof DashboardStatisticsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/_dashboard/tickets': {
       id: '/_dashboard/tickets'
       path: '/tickets'
       fullPath: '/tickets'
       preLoaderRoute: typeof DashboardTicketsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/_dashboard/transcripts': {
+      id: '/_dashboard/transcripts'
+      path: '/transcripts'
+      fullPath: '/transcripts'
+      preLoaderRoute: typeof DashboardTranscriptsRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/_dashboard/users': {
@@ -175,16 +282,26 @@ declare module '@tanstack/react-router' {
 }
 
 interface DashboardRouteChildren {
+  DashboardAuditRoute: typeof DashboardAuditRoute
+  DashboardIncidentsRoute: typeof DashboardIncidentsRoute
   DashboardOverviewRoute: typeof DashboardOverviewRoute
   DashboardReleasesRoute: typeof DashboardReleasesRoute
+  DashboardSearchRoute: typeof DashboardSearchRoute
+  DashboardStatisticsRoute: typeof DashboardStatisticsRoute
   DashboardTicketsRoute: typeof DashboardTicketsRoute
+  DashboardTranscriptsRoute: typeof DashboardTranscriptsRoute
   DashboardUsersRoute: typeof DashboardUsersRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardAuditRoute: DashboardAuditRoute,
+  DashboardIncidentsRoute: DashboardIncidentsRoute,
   DashboardOverviewRoute: DashboardOverviewRoute,
   DashboardReleasesRoute: DashboardReleasesRoute,
+  DashboardSearchRoute: DashboardSearchRoute,
+  DashboardStatisticsRoute: DashboardStatisticsRoute,
   DashboardTicketsRoute: DashboardTicketsRoute,
+  DashboardTranscriptsRoute: DashboardTranscriptsRoute,
   DashboardUsersRoute: DashboardUsersRoute,
 }
 
