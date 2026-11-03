@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#0d0f13" },
+      { name: "theme-color", content: "#130d0e" },
       { title: "RD4X Dashboard V10" },
       { name: "description", content: "RD4X Dashboard V10 — admin console for users, keys, tickets and releases." },
       { property: "og:type", content: "website" },
