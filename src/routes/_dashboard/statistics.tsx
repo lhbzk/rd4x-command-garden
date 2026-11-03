@@ -102,7 +102,7 @@ function StatisticsPage() {
             </ChartCard>
 
             <ChartCard title="Success vs Failure" description="Execution outcomes" loading={isLoading}>
-              <div className="relative h-full">
+              <div className="relative h-[calc(100%-1.5rem)]">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Tooltip {...chartTheme.tooltip} formatter={(v: number) => formatNumber(v)} />
@@ -140,7 +140,7 @@ function StatisticsPage() {
                   </defs>
                   <CartesianGrid {...chartTheme.grid} />
                   <XAxis dataKey="label" {...chartTheme.axis} minTickGap={20} />
-                  <YAxis {...chartTheme.axis} tickFormatter={formatCompact} width={44} />
+                  <YAxis {...chartTheme.axis} tickFormatter={formatCompact} width={52} />
                   <Tooltip {...chartTheme.tooltip} formatter={(v: number) => formatNumber(v)} />
                   <Area type="monotone" dataKey="users" name="Active users" stroke="var(--chart-2)" strokeWidth={2} fill="url(#users)" />
                 </AreaChart>
@@ -162,7 +162,7 @@ function StatisticsPage() {
                 <BarChart data={data?.responseTime ?? []} margin={{ left: -8, right: 8, top: 4 }} barGap={2}>
                   <CartesianGrid {...chartTheme.grid} />
                   <XAxis dataKey="label" {...chartTheme.axis} minTickGap={20} />
-                  <YAxis {...chartTheme.axis} width={40} unit="ms" />
+                  <YAxis {...chartTheme.axis} width={56} unit="ms" />
                   <Tooltip {...chartTheme.tooltip} formatter={(v: number) => `${v}ms`} />
                   <Bar dataKey="p50" name="p50" fill="var(--chart-1)" radius={[3, 3, 0, 0]} maxBarSize={14} />
                   <Bar dataKey="p95" name="p95" fill="var(--chart-3)" radius={[3, 3, 0, 0]} maxBarSize={14} opacity={0.8} />

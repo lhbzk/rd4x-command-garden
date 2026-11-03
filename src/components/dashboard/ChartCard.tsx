@@ -29,7 +29,7 @@ export function ChartCard({
         </div>
         {actions}
       </header>
-      <div className="min-w-0 flex-1 px-2 pb-3 pt-4 sm:px-3" style={{ height }}>
+      <div className="mt-auto min-w-0 shrink-0 px-2 pb-3 pt-4 sm:px-3" style={{ height }}>
         {loading ? (
           <div className="flex h-full items-end gap-1.5 px-3 pb-6">
             {Array.from({ length: 14 }).map((_, i) => (
