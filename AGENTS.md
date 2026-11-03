@@ -11,7 +11,7 @@
 
 ## Architecture rules
 
-- Frontend only: no backend, database or real auth; pages read data exclusively through `src/lib/api` functions (getOverview, getUsers, …) so a real API can replace the mock transport without UI changes.
+- No database or real auth; the only server code is AI ticket triage in `src/lib/ai/triage.functions.ts` (Lovable AI Gateway SDK) so prompts/keys stay server-side; pages read data exclusively through `src/lib/api` functions (getOverview, getUsers, …) so a real API can replace the mock transport without UI changes.
 - `src/lib/api/client.ts` `request()` is the single transport: it calls `VITE_RD4X_API_URL` when set, otherwise resolves against `src/lib/mock/data.ts` with simulated latency.
 - All mock data lives in `src/lib/mock/data.ts` (seeded RNG) — never inline mock data in components.
 - Dashboard pages live under the `_dashboard` pathless layout (sidebar + topbar); Login (`/login`) and Key (`/key`) are full-screen routes outside it.
