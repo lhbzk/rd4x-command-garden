@@ -38,6 +38,11 @@ import { capitalize } from "@/lib/format";
 import { notify } from "@/lib/notify";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+import { Loader2, Sparkles } from "lucide-react";
+import { triageTickets } from "@/lib/ai/triage.functions";
+import { URGENCY_LABEL, sortByUrgency } from "@/lib/ai/triage";
+
+const urgencyTone = (u: number) => (u >= 5 ? "danger" : u === 4 ? "warning" : u === 3 ? "info" : "neutral") as const;
 
 export const Route = createFileRoute("/_dashboard/tickets")({
   validateSearch: (s: Record<string, unknown>): { id?: string | undefined } => ({
@@ -61,15 +66,39 @@ function TicketsPage() {
     if (data) setTickets(data);
   }, [data]);
 
+  const triageQuery = useQuery({
+    queryKey: ["tickets-triage", data?.map((t) => t.id).join(",")],
+    enabled: !!data && data.length > 0,
+    staleTime: Infinity,
+    queryFn: () =>
+      triageTickets({
+        data: {
+          tickets: (data ?? [])
+            .filter((t) => t.status === "open" || t.status === "pending")
+            .map((t) => ({
+              id: t.id,
+              subject: t.subject,
+              category: t.category,
+              message: t.messages.map((m) => m.content).join(" \n ").slice(0, 600),
+            })),
+        },
+      }),
+  });
+  const triage = useMemo(
+    () => new Map((triageQuery.data?.results ?? []).map((r) => [r.id, r])),
+    [triageQuery.data],
+  );
+
   const filtered = useMemo(() => {
     const n = q.trim().toLowerCase();
-    return tickets.filter(
+    const list = tickets.filter(
       (t) =>
         (status === "all" || t.status === status) &&
         (priority === "all" || t.priority === priority) &&
         (!n || t.subject.toLowerCase().includes(n) || t.id.toLowerCase().includes(n) || t.user.username.includes(n)),
     );
-  }, [tickets, q, status, priority]);
+    return sortByUrgency(list, triage);
+  }, [tickets, q, status, priority, triage]);
 
   const selected = tickets.find((t) => t.id === selectedId) ?? filtered[0];
   const by = (st: TicketStatus) => tickets.filter((t) => t.status === st).length;
@@ -106,9 +135,18 @@ function TicketsPage() {
           {/* List */}
           <div className={cn("flex min-h-0 flex-col border-border lg:border-r", mobileView === "chat" && "hidden lg:flex")}>
             <div className="flex items-center justify-between border-b border-border px-4 py-3">
-              <p className="text-sm font-semibold">Queue</p>
+              <p className="flex items-center gap-1.5 text-sm font-semibold">
+                Queue
+                <span className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+                  {triageQuery.isFetching ? <Loader2 className="size-3 animate-spin" /> : <Sparkles className="size-3" />}
+                  {triageQuery.isFetching ? "Classificando…" : "Urgência por IA"}
+                </span>
+              </p>
               <span className="text-xs text-muted-foreground tabular">{filtered.length} tickets</span>
             </div>
+            {triageQuery.data?.error && (
+              <p className="border-b border-border bg-warning/10 px-4 py-2 text-xs text-warning">{triageQuery.data.error}</p>
+            )}
             <div className="min-h-0 flex-1 overflow-y-auto">
               {isLoading ? (
                 <div className="p-3"><LoadingSkeleton count={7} /></div>
@@ -141,9 +179,24 @@ function TicketsPage() {
                             {t.messages[t.messages.length - 1]?.content}
                           </p>
                           <div className="mt-2 flex flex-wrap gap-1.5">
+                            {triage.get(t.id) && (
+                              <StatusBadge
+                                value="urgency"
+                                tone={urgencyTone(triage.get(t.id)!.urgency)}
+                                pulse={triage.get(t.id)!.urgency >= 5}
+                              >
+                                {URGENCY_LABEL[triage.get(t.id)!.urgency] ?? "—"}
+                              </StatusBadge>
+                            )}
                             <StatusBadge value={t.status} />
                             <StatusBadge value={t.priority} dot={false} />
                           </div>
+                          {triage.get(t.id) && (
+                            <p className="mt-1.5 flex items-start gap-1 text-[11px] leading-snug text-muted-foreground">
+                              <Sparkles className="mt-0.5 size-3 shrink-0 text-primary" />
+                              {triage.get(t.id)!.reason}
+                            </p>
+                          )}
                         </div>
                       </button>
                     </li>
