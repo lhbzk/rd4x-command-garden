@@ -42,7 +42,8 @@ import { Loader2, Sparkles } from "lucide-react";
 import { triageTickets } from "@/lib/ai/triage.functions";
 import { URGENCY_LABEL, sortByUrgency } from "@/lib/ai/triage";
 
-const urgencyTone = (u: number) => (u >= 5 ? "danger" : u === 4 ? "warning" : u === 3 ? "info" : "neutral") as const;
+const urgencyTone = (u: number): "danger" | "warning" | "info" | "neutral" =>
+  u >= 5 ? "danger" : u === 4 ? "warning" : u === 3 ? "info" : "neutral";
 
 export const Route = createFileRoute("/_dashboard/tickets")({
   validateSearch: (s: Record<string, unknown>): { id?: string | undefined } => ({
