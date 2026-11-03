@@ -102,7 +102,7 @@ function StatisticsPage() {
             </ChartCard>
 
             <ChartCard title="Success vs Failure" description="Execution outcomes" loading={isLoading}>
-              <div className="relative h-full">
+              <div className="relative h-[calc(100%-1.5rem)]">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Tooltip {...chartTheme.tooltip} formatter={(v: number) => formatNumber(v)} />
